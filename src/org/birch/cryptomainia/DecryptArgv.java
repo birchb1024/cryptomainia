@@ -81,7 +81,7 @@ public class DecryptArgv extends Mainia {
 		} else if (cryptoProperties.getProperty("algorithm").equals(
 				"org.jasypt.util.text.BasicTextEncryptor")) {
 			BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-			textEncryptor.setPassword(cryptoProperties.getProperty("key"));
+			textEncryptor.setPassword(getKey());
 			return textEncryptor.decrypt(cipherText);
 		}
 		error("unknown algorithm" + cryptoProperties.getProperty("algorithm"));
