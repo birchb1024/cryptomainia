@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
+import org.jasypt.util.text.BasicTextEncryptor;
+
 public class EncryptArgv {
 
 	private final String propertyFileName = "encryptargv.properties";
@@ -21,6 +23,11 @@ public class EncryptArgv {
 		} catch (NumberFormatException ignore) {
 		}
 		;
+	}
+
+	public EncryptArgv() {
+		// Encrypt version
+		cryptoProperties = new Properties();
 	}
 
 	private void callTarget(String[] params) throws Exception {
@@ -65,7 +72,8 @@ public class EncryptArgv {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length < 3) {
-			error("Usage: <target class> <pattern spec> <passthrough arg>...");
+			EncryptArgv self = new EncryptArgv();
+			System.out.println(self.encrypt(args));
 		}
 		EncryptArgv self = new EncryptArgv(args[0], args[1]);
 		String[] params = new String[args.length - 2];
@@ -80,6 +88,20 @@ public class EncryptArgv {
 
 	}
 
+	public String encrypt(String[] args) throws Exception {
+		readKey();
+		if (cryptoProperties.getProperty("algorithm").equals("tolower")) {
+			return args[0].toUpperCase();
+		} else if (cryptoProperties.getProperty("algorithm").equals(
+				"org.jasypt.util.text.BasicTextEncryptor")) {
+			BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+			textEncryptor.setPassword(cryptoProperties.getProperty("key"));
+			String myEncryptedText = textEncryptor.encrypt(args[0]);
+			System.out.println(myEncryptedText);
+			return myEncryptedText;
+		}
+		return null;
+	}
 
 	private static void error(String message) throws Exception {
 		System.err.println(message);
@@ -88,9 +110,9 @@ public class EncryptArgv {
 
 	private void encryptArgAtPosition(String[] params) throws Exception {
 		if (position > 0 && position <= params.length) {
-			params[position-1] = decypher(params[position-1]);
+			params[position - 1] = decypher(params[position - 1]);
 		} else {
-			throw new Exception("Bad position value: " + position );
+			throw new Exception("Bad position value: " + position);
 		}
 	}
 
@@ -103,13 +125,17 @@ public class EncryptArgv {
 				params[i] = prefixPattern + plainText;
 				return;
 			}
-
 		}
 	}
 
 	private String decypher(String cipherText) throws Exception {
 		if (cryptoProperties.getProperty("algorithm").equals("tolower")) {
 			return cipherText.toLowerCase();
+		} else if (cryptoProperties.getProperty("algorithm").equals(
+				"org.jasypt.util.text.BasicTextEncryptor")) {
+			BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+			textEncryptor.setPassword(cryptoProperties.getProperty("key"));
+			return textEncryptor.decrypt(cipherText);
 		}
 		error("unknown algorithm" + cryptoProperties.getProperty("algorithm"));
 		return null;

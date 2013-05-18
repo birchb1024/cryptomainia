@@ -138,7 +138,7 @@
             <fileset dir="${src.dir}" includes="**/*.properties" />
             <manifest>
                 <attribute name="Main-Class" value="org.birch.cryptomainia.EncryptArgv" />
-                <attribute name="Class-Path" value="needed/" />
+                <attribute name="Class-Path" value="needed/jasypt-1.9.0.jar" />
                 <attribute name="Specification-Title" value="Cryptomainia" />
                 <attribute name="Implementation-Title" value="Genyris" />
                 <attribute name="Implementation-Version" value="${implementation-version}" />

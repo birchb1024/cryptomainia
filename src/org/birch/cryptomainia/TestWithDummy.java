@@ -16,7 +16,7 @@ public class TestWithDummy extends TestCase {
 		}
 	}
 	public void testEncrypter() throws Exception {
-		String[] args = {"org.birch.cryptomainia.DummyTarget","--password=", "A","--password=BBBB","3"};
+		String[] args = {"org.birch.cryptomainia.DummyTarget","--password=", "A","--password=Vv3obVj2aCNfRbFr6xp7eQ==","3"};
 		String[] expected = {"A","--password=bbbb","3"};
 		EncryptArgv.main(args);
 		
@@ -24,8 +24,8 @@ public class TestWithDummy extends TestCase {
 	}
 
 	public void testMultipleEncrypter()  throws Exception {
-		String[] args = {"org.birch.cryptomainia.DummyTarget","--password=", "--password=AAAA","--password=BBBB","--password=CCCC"};
-		String[] expected = {"--password=aaaa","--password=BBBB","--password=CCCC"};
+		String[] args = {"org.birch.cryptomainia.DummyTarget","--password=", "--password=ZGXmpDNKPzj54hyZWi+9Kw==","--password=ZGXmpDNKPzj54hyZWi+9Kw==","--password=CCCC"};
+		String[] expected = {"--password=BBBB","--password=ZGXmpDNKPzj54hyZWi+9Kw==","--password=CCCC"};
 		EncryptArgv.main(args);
 		assertArrayEquals(DummyTarget.capturedArgs, expected); 
 	}
@@ -38,15 +38,15 @@ public class TestWithDummy extends TestCase {
 	}
 
 	public void testEncrypterPosition()  throws Exception {
-		String[] args = {"org.birch.cryptomainia.DummyTarget","2", "A","MYENCRYPTEDPASSWORD","C", "D", "E", "F", "G"};
-		String[] expected = {"A","myencryptedpassword","C", "D", "E", "F", "G"};
+		String[] args = {"org.birch.cryptomainia.DummyTarget","2", "A","5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=","C", "D", "E", "F", "G"};
+		String[] expected = {"A","MYENCRYPTEDPASSWORD","C", "D", "E", "F", "G"};
 		EncryptArgv.main(args);
 		assertArrayEquals(DummyTarget.capturedArgs, expected); 
 	}
 
 	public void testEncrypterPositionShort()  throws Exception {
-		String[] args = {"org.birch.cryptomainia.DummyTarget","1", "MYENCRYPTEDPASSWORD"};
-		String[] expected = {"myencryptedpassword"};
+		String[] args = {"org.birch.cryptomainia.DummyTarget","1", "5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw="};
+		String[] expected = {"MYENCRYPTEDPASSWORD"};
 		EncryptArgv.main(args);
 		assertArrayEquals(DummyTarget.capturedArgs, expected); 
 	}
