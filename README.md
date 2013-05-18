@@ -16,6 +16,7 @@ The utility should be general enough for masking passwords for any Java
 application, not just Liquibase.
  
 HOW IT WORKS
+------------
 
 The main class of the target program is usurped by a another main class provided 
 by the utility. (org.birch.cryptomainia.DecryptArgv). DecryptArgv.main() reads 
@@ -32,11 +33,19 @@ pseudo code this is:
       invoke target class.main(decrypted argument and the other args to pass...)
 
 INSTALLATION
+------------
 
 There are two jar files needed: cryptomainia.jar and jasypt-1.9.0.jar. Download these and 
-place them in a directory. 
+place them in a directory. These can be downloaded from here:
+
+   https://sourceforge.net/projects/cryptomainia/files/?source=navbar
+
+and here
+
+   https://sourceforge.net/projects/jasypt/files/
 
 USAGE
+------------
 
 There are three steps to using the utility:
 
@@ -44,48 +53,47 @@ There are three steps to using the utility:
 2. Encrypt passwords
 3. Integrate with target application
 
-1. Configuration
+### Configuration
 
 A file called 'cryptomainia.properties' is expected in the classpath. The file 
 is a standard Java properties file with two values as follows:
 
-  algorithm: org.jasypt.util.text.BasicTextEncryptor
-  key: yourSecretKey
+    algorithm: org.jasypt.util.text.BasicTextEncryptor  
+    key: yourSecretKey  
 
 Edit the file and save somewhere that only authorised used have access. Choose an new key.
 
-2. Encrypting passwords
+### Encrypting passwords
 
 The EncryptArgv class encrypts the argument and prints
 the cipher-text on the standard output. As follows:
 
 Given the following sub-directory structure:
  
- .
-    dist
-       cryptomainia.jar
-       jasypt-1.9.0.jar
-    keystore
-       cryptomainia.properties
+     .
+        dist
+           cryptomainia.jar
+           jasypt-1.9.0.jar
+        keystore
+           cryptomainia.properties
 
 The command is as follows:
 
-$ java -cp dist/*:keystore org.birch.cryptomainia.EncryptArgv Password123
-aPYPaxnrbKDUbaepoj4LSQWdoXhaD2P6
+    $ java -cp dist/*:keystore org.birch.cryptomainia.EncryptArgv \
+       Password123 aPYPaxnrbKDUbaepoj4LSQWdoXhaD2P6
 
-The encrypted password can then be saved to disk, typically in a configuration file 
-used by a calling script.
+The encrypted password can then be saved to disk, typically in a configuration file used by a calling script.
 
-3. Integrating with the application
+### Integrating with the application
 
 The DecryptArgv class uses the arguments passed to its main() function to manage the
 target application.  DecryptArgv.main() expects arguments as follows:
 
- 1 - name of the target application's main class . e.g. org.apache.liquibase
- 2 - either number or a string. 
-     If a number this is position of the password argument to be decrypted
-     If a string, it's a prefix which identifies a password parameter
- 3.. All other arguments are passed to the target class.main() 
+1. name of the target application's main class . e.g. org.apache.liquibase
+2. either number or a string. 
+     * If a number this is position of the password argument to be decrypted
+     * If a string, it's a prefix which identifies a password parameter
+3.  All other arguments are passed to the target class.main() 
  
  Examples:
  
@@ -93,46 +101,38 @@ target application.  DecryptArgv.main() expects arguments as follows:
  
  Given the same  directory structure and a target application called 'DummyTarget' the command is:
  
-  $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
-     liquibase.integration.commandline.Main 1 '5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' C D E F G
+    $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
+       liquibase.integration.commandline.Main 1 \
+       '5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' C D E F G
  
 2. With a string prefix. 
 
-Some applications require a password to be passed prefixed with a switch or flag, for example
--Dpassword=XXXXX. DecryptArgv will look for the first such argument and replace the
-password component with the decrypted string. For example, with the same directory structure
-as before:
+Some applications require a password to be passed prefixed with a switch or flag, for example `-Dpassword=XXXXX`. DecryptArgv will look for the first such argument and replace the password component with the decrypted string. For example, with the same directory structure as before:
 
-$ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
-     liquibase.integration.commandline.Main --password= --user=fred \
-     '--password=5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' A B C D ...
+    $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
+         liquibase.integration.commandline.Main --password= --user=fred \
+         '--password=5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' A B C D ...
    
 TESTING
+------------
 
-You can use the DummyTarget class to check the decryption is as expected. The class's main()
-prints its arguments. For example replace the target application with the dummy as follows:
+You can use the DummyTarget class to check the decryption is as expected. The class's main() prints its arguments. For example replace the target application with the dummy as follows:
 
-$ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
-     org.birch.cryptomainia.DummyTarget --password= --user=fred \
-     '--password=5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' A B C D ...
-
-DummyTarget: --user=fred --password=MYENCRYPTEDPASSWORD A B C D ... 
+    $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
+         org.birch.cryptomainia.DummyTarget --password= --user=fred \
+         '--password=5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' A B C D         ...
+        DummyTarget: --user=fred --password=MYENCRYPTEDPASSWORD A B C D ... 
 
 ADVANCED
+------------
 
 To decrypted more than one password you can chain recursive invocations
 of DecryptArgv. The following example decrypts two passwords using positional parameters.
  
-$ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
->      org.birch.cryptomainia.DecryptArgv 3 \
->      org.birch.cryptomainia.DummyTarget 2 \
->      '5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' \
->      'ZGXmpDNKPzj54hyZWi+9Kw==' 
-DummyTarget: MYENCRYPTEDPASSWORD BBBB
+    $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
+    >      org.birch.cryptomainia.DecryptArgv 3 \
+    >      org.birch.cryptomainia.DummyTarget 2 \
+    >      '5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' \
+    >      'ZGXmpDNKPzj54hyZWi+9Kw==' 
+    DummyTarget: MYENCRYPTEDPASSWORD BBBB
 
-END
-
-
-
-
- 
