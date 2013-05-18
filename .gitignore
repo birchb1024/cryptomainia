@@ -1,0 +1,4 @@
+dist
+*build-number.txt
+bin
+antbuild
