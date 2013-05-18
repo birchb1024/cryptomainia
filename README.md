@@ -79,8 +79,9 @@ Given the following sub-directory structure:
 
 The command is as follows:
 
-    $ java -cp dist/*:keystore org.birch.cryptomainia.EncryptArgv \
-       Password123 aPYPaxnrbKDUbaepoj4LSQWdoXhaD2P6
+    $ java -cp dist/*:keystore org.birch.cryptomainia.EncryptArgv Password123 
+    
+    aPYPaxnrbKDUbaepoj4LSQWdoXhaD2P6
 
 The encrypted password can then be saved to disk, typically in a configuration file used by a calling script.
 
@@ -89,7 +90,7 @@ The encrypted password can then be saved to disk, typically in a configuration f
 The DecryptArgv class uses the arguments passed to its main() function to manage the
 target application.  DecryptArgv.main() expects arguments as follows:
 
-1. name of the target application's main class . e.g. org.apache.liquibase
+1. name of the target application's main class . e.g. liquibase.integration.commandline.Main
 2. either number or a string. 
      * If a number this is position of the password argument to be decrypted
      * If a string, it's a prefix which identifies a password parameter
@@ -97,15 +98,15 @@ target application.  DecryptArgv.main() expects arguments as follows:
  
  Examples:
  
- 1. Simple positional argument:
+#### Simple positional argument:
  
  Given the same  directory structure and a target application called 'DummyTarget' the command is:
  
-    $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
-       liquibase.integration.commandline.Main 1 \
-       '5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' C D E F G
+     $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
+        liquibase.integration.commandline.Main 1 \
+        '5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' C D E F G
  
-2. With a string prefix. 
+#### With a string prefix. 
 
 Some applications require a password to be passed prefixed with a switch or flag, for example `-Dpassword=XXXXX`. DecryptArgv will look for the first such argument and replace the password component with the decrypted string. For example, with the same directory structure as before:
 
@@ -119,9 +120,9 @@ TESTING
 You can use the DummyTarget class to check the decryption is as expected. The class's main() prints its arguments. For example replace the target application with the dummy as follows:
 
     $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
-         org.birch.cryptomainia.DummyTarget --password= --user=fred \
-         '--password=5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' A B C D         ...
-        DummyTarget: --user=fred --password=MYENCRYPTEDPASSWORD A B C D ... 
+    >     org.birch.cryptomainia.DummyTarget --password= --user=fred \
+    >     '--password=5xXi1rFwqO5HWoIFJJ7walN9iWE4oIDCBGkmJtbQhKw=' A B C D         ...
+    DummyTarget: --user=fred --password=MYENCRYPTEDPASSWORD A B C D ... 
 
 ADVANCED
 ------------
