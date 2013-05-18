@@ -135,7 +135,7 @@
         <jar destfile="${dist.dir}/cryptomainia.jar" duplicate="fail">
             <fileset dir="${basedir}" includes="README LICENSE" />
             <fileset dir="${src.compile.dir}" includes="**/*.class" />
-            <fileset dir="${src.dir}" includes="**/*.properties" />
+            <fileset dir="${src.dir}" excludes="**/*.properties" />
             <manifest>
                 <attribute name="Main-Class" value="org.birch.cryptomainia.EncryptArgv" />
                 <attribute name="Class-Path" value="needed/jasypt-1.9.0.jar" />
@@ -146,6 +146,7 @@
                 <attribute name="Implementation-Date" value="${TODAY}" />
             </manifest>
         </jar>
+    	<copy file="needed/jasypt-1.9.0.jar" tofile="dist/jasypt-1.9.0.jar" verbose="true" overwrite="true"/>
     </target>
 
 

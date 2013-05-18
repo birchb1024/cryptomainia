@@ -5,7 +5,7 @@ import java.io.IOException;
 public class SleepingTarget { 
 
 	/**
-	 * Wait for user to hit enter.
+	 * Wait for 10 seconds so we can see args in process listing.
 	 */
 	public static String[] capturedArgs;
 	
