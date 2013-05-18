@@ -61,7 +61,8 @@ is a standard Java properties file with two values as follows:
     algorithm: org.jasypt.util.text.BasicTextEncryptor  
     key: yourSecretKey  
 
-Edit the file and save somewhere that only authorised used have access. Choose an new key.
+Edit the file and save it somewhere that only authorised users have access. 
+Choose an new key. 
 
 ### Encrypting passwords
 
@@ -100,7 +101,7 @@ target application.  DecryptArgv.main() expects arguments as follows:
  
 #### Simple positional argument:
  
- Given the same  directory structure and a target application called 'DummyTarget' the command is:
+ Given the same  directory structure and liquibase as target, the command is:
  
      $ java -cp dist/*:keystore org.birch.cryptomainia.DecryptArgv \
         liquibase.integration.commandline.Main 1 \
