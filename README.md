@@ -25,8 +25,8 @@ a key. It uses the first two command-line arguments to identify the target class
 whose main() is to be called and the encrypted argument which is decrypted. In 
 pseudo code this is:
 
-   User invokes DecryptArgv.main(target class name, id of encrypted arg, args to pass...)
-   DecryptArgv.main:
+    User invokes DecryptArgv.main(target class name, id of encrypted arg, args to pass...)
+    DecryptArgv.main:
       reads key file 
       decrypts args[id]
       load target class
