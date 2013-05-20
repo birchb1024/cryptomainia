@@ -81,7 +81,7 @@ Given the following sub-directory structure:
 The command is as follows:
 
     $ java -cp dist/*:keystore org.birch.cryptomainia.EncryptArgv 
-    
+    Password:
     aPYPaxnrbKDUbaepoj4LSQWdoXhaD2P6
 
 The encrypted password can then be saved to disk, typically in a configuration file used by a calling script.
