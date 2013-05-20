@@ -76,9 +76,9 @@ public class DecryptArgv extends Mainia {
 	}
 
 	private String decypher(String cipherText) throws Exception {
-		if (cryptoProperties.getProperty("algorithm").equals("tolower")) {
+		if (isAlgorithm("tolower")) {
 			return cipherText.toLowerCase();
-		} else if (cryptoProperties.getProperty("algorithm").equals(
+		} else if (isAlgorithm(
 				"org.jasypt.util.text.BasicTextEncryptor")) {
 			BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 			textEncryptor.setPassword(getKey());

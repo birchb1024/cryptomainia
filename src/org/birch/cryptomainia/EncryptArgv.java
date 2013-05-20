@@ -6,7 +6,6 @@ import org.jasypt.util.text.BasicTextEncryptor;
 
 public class EncryptArgv extends Mainia {
 
-
 	public EncryptArgv() {
 		cryptoProperties = new Properties();
 	}
@@ -20,16 +19,15 @@ public class EncryptArgv extends Mainia {
 	}
 
 	public String encrypt(String[] args) throws Exception {
-		if (cryptoProperties.getProperty("algorithm").equals("tolower")) {
+		if (isAlgorithm("tolower")) {
 			return args[0].toUpperCase();
-		} else if (cryptoProperties.getProperty("algorithm").equals(
-				"org.jasypt.util.text.BasicTextEncryptor")) {
+		} else if (isAlgorithm("org.jasypt.util.text.BasicTextEncryptor")) {
 			BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 			textEncryptor.setPassword(getKey());
 			String myEncryptedText = textEncryptor.encrypt(args[0]);
 			return myEncryptedText;
-		}
-		return null;
+		} else
+			throw new Exception("Bad algorithm: " + getAlgorithm());
 	}
 
 }

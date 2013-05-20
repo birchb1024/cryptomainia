@@ -31,6 +31,14 @@ public class Mainia {
 		return cryptoProperties.getProperty("key").trim();
 	}
 
+	protected String getAlgorithm() {
+		return cryptoProperties.getProperty("algorithm").trim();
+	}
+
+	protected boolean isAlgorithm(String other) {
+		return cryptoProperties.getProperty("algorithm").trim().equals(other);
+	}
+
 	protected static void error(String message) throws Exception {
 		System.err.println(message);
 		throw new Exception(message);
