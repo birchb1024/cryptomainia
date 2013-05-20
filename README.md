@@ -66,7 +66,7 @@ Choose an new key.
 
 ### Encrypting passwords
 
-The EncryptArgv class encrypts the argument and prints
+The EncryptArgv class prompts for a password and prints
 the cipher-text on the standard output. As follows:
 
 Given the following sub-directory structure:
@@ -80,7 +80,7 @@ Given the following sub-directory structure:
 
 The command is as follows:
 
-    $ java -cp dist/*:keystore org.birch.cryptomainia.EncryptArgv Password123 
+    $ java -cp dist/*:keystore org.birch.cryptomainia.EncryptArgv 
     
     aPYPaxnrbKDUbaepoj4LSQWdoXhaD2P6
 
