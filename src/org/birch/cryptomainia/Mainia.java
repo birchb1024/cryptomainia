@@ -3,6 +3,8 @@ package org.birch.cryptomainia;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.jasypt.util.text.BasicTextEncryptor;
+
 public class Mainia {
 	protected final String propertyFileName = "cryptomainia.properties";
 	protected Properties cryptoProperties;
@@ -37,6 +39,19 @@ public class Mainia {
 
 	protected boolean isAlgorithm(String other) {
 		return cryptoProperties.getProperty("algorithm").trim().equals(other);
+	}
+
+	protected String decypher(String cipherText) throws Exception {
+		if (isAlgorithm("tolower")) {
+			return cipherText.toLowerCase();
+		} else if (isAlgorithm(
+				"org.jasypt.util.text.BasicTextEncryptor")) {
+			BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+			textEncryptor.setPassword(getKey());
+			return textEncryptor.decrypt(cipherText);
+		}
+		error("unknown algorithm" + cryptoProperties.getProperty("algorithm"));
+		return null;
 	}
 
 	protected static void error(String message) throws Exception {

@@ -3,8 +3,6 @@ package org.birch.cryptomainia;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
-import org.jasypt.util.text.BasicTextEncryptor;
-
 public class DecryptArgv extends Mainia {
 
 	private String targetMainClass;
@@ -73,18 +71,5 @@ public class DecryptArgv extends Mainia {
 				return;
 			}
 		}
-	}
-
-	private String decypher(String cipherText) throws Exception {
-		if (isAlgorithm("tolower")) {
-			return cipherText.toLowerCase();
-		} else if (isAlgorithm(
-				"org.jasypt.util.text.BasicTextEncryptor")) {
-			BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-			textEncryptor.setPassword(getKey());
-			return textEncryptor.decrypt(cipherText);
-		}
-		error("unknown algorithm" + cryptoProperties.getProperty("algorithm"));
-		return null;
 	}
 }
