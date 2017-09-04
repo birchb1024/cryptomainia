@@ -15,6 +15,14 @@ encrypting them then having them decrypted within the Java process before they
 The utility should be general enough for masking passwords for any Java 
 application, not just Liquibase.
  
+TODO
+----
+
+```
+Add documentation for DecryptSubprocess main
+```
+
+
 HOW IT WORKS
 ------------
 
