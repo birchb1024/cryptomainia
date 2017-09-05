@@ -1,4 +1,4 @@
-<project name="Cryptomainia" default="make-jar" basedir=".">
+<project name="Cryptomainia" default="make-and-test" basedir=".">
     
     <property name="build.compiler" value="javac1.6"/>
     <property name="needed.lib.dir" value="needed" />
@@ -17,6 +17,7 @@
     <target name="clean" depends="only-clean" />
     <target name="compile" depends="only-clean, only-init, only-compile" description="Compile the Java" />
     <target name="make-jar" depends="only-clean, only-init, version-default,compile, only-make-jar" description="compile and create jar" />
+    <target name="make-and-test" depends="make-jar, only-test" description="compile and create jar, then run tests" />
 
     <!-- Libraries required  -->
     <fileset id="needed.libs" dir="${needed.lib.dir}">
@@ -149,7 +150,11 @@
     	<copy file="needed/jasypt-1.9.0.jar" tofile="dist/jasypt-1.9.0.jar" verbose="true" overwrite="true"/>
     </target>
 
-
+    <target name="only-test">
+        <exec executable="/bin/bash">
+            <arg line="test/test-cli.sh"/>
+        </exec>
+    </target>
 
 
    </project>
