@@ -1,6 +1,5 @@
 <project name="Cryptomainia" default="make-and-test" basedir=".">
     
-    <property name="build.compiler" value="javac1.7"/> <!-- See https://bz.apache.org/bugzilla/show_bug.cgi?id=53347 -->
     <property name="needed.lib.dir" value="needed" />
     <property name="junit.lib.dir" value="needed" />
     <property name="build.dir" value="antbuild" />
