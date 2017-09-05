@@ -28,7 +28,7 @@ public class DecryptSubprocess extends Mainia {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length < 3) {
-			error("Usage: <environment variable name> <encrypted password> <command line and args>...");
+			print_error_and_quit("Usage: <environment variable name> <encrypted password> <command line and args>...");
 		}
 		DecryptSubprocess self = new DecryptSubprocess(args[0], args[1]);
 		String[] commandLine = new String[args.length - 2];
@@ -39,7 +39,7 @@ public class DecryptSubprocess extends Mainia {
 			self.spawnSubprocess(commandLine);
 		} catch (Exception e) {
 			e.printStackTrace();
-			error(e.getMessage());
+			print_error_and_quit(e.getMessage());
 		}
 
 	}
@@ -72,18 +72,16 @@ public class DecryptSubprocess extends Mainia {
 
 	private String[] makeNewEnvironment() {
 		Map<String, String> env = System.getenv();
-		int newEnvLength = env.size();
-		if (!env.containsKey(environmentVariableName)) {
-			newEnvLength += 1;
+		int newEnvLength = env.size() + 1;
+		if (env.containsKey(environmentVariableName)) {
+			print_error_and_quit("Environment already contains variable " + environmentVariableName);
 		}
 		String[] newEnv = new String[newEnvLength];
 		newEnv[0] = environmentVariableName + "=" + decryptedPassword;
 		int count = 1;
 		for (String envName : env.keySet()) {
-			if (!envName.equals(environmentVariableName)) {
-				newEnv[count] = envName + "=" + env.get(envName);
-				count += 1;
-			}
+			newEnv[count] = envName + "=" + env.get(envName);
+			count += 1;
 		}
 		return newEnv;
 	}

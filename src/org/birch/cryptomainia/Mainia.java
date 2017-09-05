@@ -15,7 +15,7 @@ public class Mainia {
 				.getResourceAsStream(propertyFileName);
 
 		if (in == null) {
-			error("Could not access key file in classpath: " + propertyFileName);
+			print_error_and_quit("Could not access key file in classpath: " + propertyFileName);
 		}
 		cryptoProperties.load(in);
 
@@ -25,7 +25,7 @@ public class Mainia {
 
 	private void assertProperty(String key) throws Exception {
 		if (cryptoProperties.getProperty(key) == null) {
-			error("missing crypto propety: " + key);
+			print_error_and_quit("missing crypto propety: " + key);
 		}
 	}
 
@@ -50,13 +50,13 @@ public class Mainia {
 			textEncryptor.setPassword(getKey());
 			return textEncryptor.decrypt(cipherText);
 		}
-		error("unknown algorithm" + cryptoProperties.getProperty("algorithm"));
+		print_error_and_quit("unknown algorithm" + cryptoProperties.getProperty("algorithm"));
 		return null;
 	}
 
-	protected static void error(String message) throws Exception {
+	protected static void print_error_and_quit(String message) {
 		System.err.println(message);
-		throw new Exception(message);
+		System.exit(1);
 	}
 
 }

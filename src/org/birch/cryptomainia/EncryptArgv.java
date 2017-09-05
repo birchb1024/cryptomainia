@@ -14,7 +14,7 @@ public class EncryptArgv extends Mainia {
 	public static void main(String[] args) throws Exception {
 		Console console = System.console();
 		if (console == null) {
-			error("Couldn't get Console instance");
+			print_error_and_quit("Couldn't get Console instance");
 		}
 		console.printf("Password: ");
 		char[] password = console.readPassword();

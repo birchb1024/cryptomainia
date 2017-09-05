@@ -38,7 +38,7 @@ public class DecryptArgv extends Mainia {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length < 3) {
-			error("usage <main class> <argument #>|<prefix pattern> <args>...");
+			print_error_and_quit("usage <main class> <argument #>|<prefix pattern> <args>...");
 		}
 		DecryptArgv self = new DecryptArgv(args[0], args[1]);
 		String[] params = new String[args.length - 2];
@@ -48,7 +48,8 @@ public class DecryptArgv extends Mainia {
 			self.callTarget(params);
 		} catch (Exception e) {
 			e.printStackTrace();
-			error(e.getMessage());
+			print_error_and_quit(e.getMessage());
+			System.exit(-1);
 		}
 
 	}
