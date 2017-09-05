@@ -1,6 +1,6 @@
 <project name="Cryptomainia" default="make-and-test" basedir=".">
     
-    <property name="build.compiler" value="javac1.6"/>
+    <property name="build.compiler" value="javac1.7"/> <!-- See https://bz.apache.org/bugzilla/show_bug.cgi?id=53347 -->
     <property name="needed.lib.dir" value="needed" />
     <property name="junit.lib.dir" value="needed" />
     <property name="build.dir" value="antbuild" />
@@ -141,7 +141,7 @@
                 <attribute name="Main-Class" value="org.birch.cryptomainia.EncryptArgv" />
                 <attribute name="Class-Path" value="needed/jasypt-1.9.0.jar" />
                 <attribute name="Specification-Title" value="Cryptomainia" />
-                <attribute name="Implementation-Title" value="Genyris" />
+                <attribute name="Implementation-Title" value="Cryptomainia" />
                 <attribute name="Implementation-Version" value="${implementation-version}" />
                 <attribute name="Implementation-Vendor" value="Peter William Birch" />
                 <attribute name="Implementation-Date" value="${TODAY}" />
