@@ -65,7 +65,7 @@ assert_status 1 "bad environment variable in sub-process execution."
 #
 # Test decrypted password passed to sub-process as environment variable
 #
-java -cp dist/*:needed/*:keystore org.birch.cryptomainia.DecryptSubprocess TESTPASSWORD 'Kfx3hrZ5p/pf1UkVeNAxOg==' /bin/bash -c 'echo $TESTPASSWORD'
+java -cp dist/*:needed/*:keystore org.birch.cryptomainia.DecryptSubprocess TESTPASSWORD 'Kfx3hrZ5p/pf1UkVeNAxOg==' /bin/bash -c 'echo $TESTPASSWORD' | grep Guava
 assert_status 0 "decrypted password passed to sub-process as environment variable"
 
 #
@@ -94,6 +94,13 @@ else
     echo "TEST: environment is passed through intact: PASSED"
 fi
 
+#
+# Test Python itengration
+#
+python_raw=$(readlink -f $(which python))
+echo "Using ${python_raw}"
+java -cp dist/*:needed/*:keystore org.birch.cryptomainia.DecryptSubprocess TESTPASSWORD 'Kfx3hrZ5p/pf1UkVeNAxOg==' ${python_raw} -c "import os; print os.environ['TESTPASSWORD']" | grep Guava
+assert_status 0 "decrypted password passed to Python as environment variable"
 
 echo '------------------------------------------------------------------------------'
 if [[ "$failure_count" != "0" ]]
